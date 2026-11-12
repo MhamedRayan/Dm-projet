@@ -1,0 +1,82 @@
+train: 21808 functions | vulnerable: 45.80%
+validation: 2732 functions | vulnerable: 43.45%
+test: 2731 functions | vulnerable: 45.92%
+
+
+Embeddings (21808, 768) -> data\cache\emb_train_dbe679de338e.npy
+
+
+Embeddings (2732, 768) -> data\cache\emb_validation_dff6da1f6168.npy
+
+
+Embeddings (2731, 768) -> data\cache\emb_test_aa8d8bc31bd4.npy
+epoch 01 | val PR-AUC 0.5448
+epoch 02 | val PR-AUC 0.5482
+epoch 03 | val PR-AUC 0.5590
+epoch 04 | val PR-AUC 0.5681
+epoch 05 | val PR-AUC 0.5755
+epoch 06 | val PR-AUC 0.5755
+epoch 07 | val PR-AUC 0.5809
+epoch 08 | val PR-AUC 0.5731
+epoch 09 | val PR-AUC 0.5938
+epoch 10 | val PR-AUC 0.5949
+epoch 11 | val PR-AUC 0.5956
+epoch 12 | val PR-AUC 0.5941
+epoch 13 | val PR-AUC 0.6051
+epoch 14 | val PR-AUC 0.6053
+epoch 15 | val PR-AUC 0.6044
+epoch 16 | val PR-AUC 0.6105
+epoch 17 | val PR-AUC 0.6033
+epoch 18 | val PR-AUC 0.6104
+epoch 19 | val PR-AUC 0.6189
+epoch 20 | val PR-AUC 0.6142
+epoch 21 | val PR-AUC 0.6137
+epoch 22 | val PR-AUC 0.6201
+epoch 23 | val PR-AUC 0.6242
+epoch 24 | val PR-AUC 0.6217
+epoch 25 | val PR-AUC 0.6274
+epoch 26 | val PR-AUC 0.6193
+epoch 27 | val PR-AUC 0.6301
+epoch 28 | val PR-AUC 0.6337
+epoch 29 | val PR-AUC 0.6245
+epoch 30 | val PR-AUC 0.6301
+Chosen threshold (val, F2): 0.216
+
+=== Frozen CodeBERTa + MLP head (test) ===
+
+--- Threshold: default 0.5 ---
+              precision    recall  f1-score   support
+
+           0      0.691     0.385     0.494      1477
+           1      0.524     0.797     0.632      1254
+
+    accuracy                          0.574      2731
+   macro avg      0.607     0.591     0.563      2731
+weighted avg      0.614     0.574     0.558      2731
+
+Confusion matrix:
+ [[ 568  909]
+ [ 254 1000]]
+
+--- Threshold: chosen 0.216 ---
+              precision    recall  f1-score   support
+
+           0      0.877     0.082     0.150      1477
+           1      0.477     0.986     0.643      1254
+
+    accuracy                          0.497      2731
+   macro avg      0.677     0.534     0.396      2731
+weighted avg      0.693     0.497     0.376      2731
+
+Confusion matrix:
+ [[ 121 1356]
+ [  17 1237]]
+
+ROC-AUC: 0.668 | PR-AUC: 0.657
+
+Baseline (majority) recall(vulnerable): 0.0
+TF-IDF + LogReg | ROC-AUC: 0.679 | PR-AUC: 0.629
+
+
+
+Saved -> models\agent2_transformer
