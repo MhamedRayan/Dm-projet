@@ -36,5 +36,23 @@
 
 The F2 threshold deliberately favours recall (missing a vulnerability is worse than a
 false alarm), so Agent 3's decision tree combines this score with Agent 1's structural
-score instead of relying on it alone. See `results_agent2.txt` for the full run and
-`results_agent2_diversevul.txt` for the external validation.
+score instead of relying on it alone. See `results_agent2.txt` for the full run.
+
+### External validation (DiverseVul, zero-shot)
+
+Evaluated on a stratified 5,000-function sample of the DiverseVul test split (50/50
+balanced for metric symmetry; the raw split is only 5.73% vulnerable):
+
+| Metric | Value |
+|---|---|
+| ROC-AUC | 0.549 |
+| PR-AUC | 0.528 |
+
+**Finding: no meaningful zero-shot transfer.** The Devign-trained head scores almost every
+DiverseVul function as vulnerable (recall ~99%, precision ~50% at both thresholds), so the
+ranking is near chance (ROC-AUC ~0.55). Devign covers 4 large C projects labelled from
+fix commits, while DiverseVul spans many projects, CWEs and a very different base rate -
+a textbook domain shift. Consequence for the report: the code-risk score is only
+meaningful on its training distribution; Agent 3 must route out-of-distribution code to
+REVIEW, or the head must be retrained/calibrated on target data. See
+`results_agent2_diversevul.txt`.

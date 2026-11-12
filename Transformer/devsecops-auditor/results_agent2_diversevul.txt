@@ -12,22 +12,6 @@
 DiverseVul test rows: 330492 | vulnerable: 5.73%
 Evaluating on 5000 unique functions | vulnerable: 50.00%
 
-Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]
-Loading weights:  50%|####9     | 51/103 [00:00<00:00, 478.74it/s]
-Loading weights: 100%|##########| 103/103 [00:00<00:00, 725.98it/s]
-  scored 16/5000
-  scored 416/5000
-  scored 816/5000
-  scored 1216/5000
-  scored 1616/5000
-  scored 2016/5000
-  scored 2416/5000
-  scored 2816/5000
-  scored 3216/5000
-  scored 3616/5000
-  scored 4016/5000
-  scored 4416/5000
-  scored 4816/5000
 
 === DiverseVul external (zero-shot) ===
 
