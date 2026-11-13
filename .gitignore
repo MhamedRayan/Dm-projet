@@ -1,0 +1,7 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Large datasets, caches and pretrained artifacts (kept locally, not in git)
+Transformer/devsecops-auditor/data/
+Transformer/devsecops-auditor/models/
