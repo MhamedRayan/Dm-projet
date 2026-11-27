@@ -101,6 +101,15 @@ With the current model, `examples/safe.py` returns PASS and
   or `--code "os.system(cmd)"`.
 - Test: `python test_agent2.py` (loads the ~500 MB model; CPU is fine).
 - The model is loaded lazily and cached; missing deps/model/input fails safe.
+- Model source: [MhamedRayan/devsecops-transformer](https://huggingface.co/MhamedRayan/devsecops-transformer)
+  on Hugging Face. The wrapper downloads missing files automatically on first
+  use via `huggingface_hub.hf_hub_download` into `models/agent2_transformer/`
+  (gitignored: the ~500 MB weights are not committed). No manual step is needed;
+  HF's cache avoids re-downloading. To prefetch explicitly:
+  ```
+  pip install -U huggingface_hub
+  python -c "from huggingface_hub import hf_hub_download; [hf_hub_download('MhamedRayan/devsecops-transformer', f, local_dir='models/agent2_transformer') for f in ('config.json','model.safetensors','tokenizer.json','tokenizer_config.json','meta.json')]"
+  ```
 - Model notes: CodeBERT fine-tuned on CodeXGLUE defect detection + DiverseVul
   (C/C++ vulnerability data). `meta.json` reports F1 0.6881, precision 0.5804,
   recall 0.845, ROC-AUC 0.7475; the wrapper applies the tuned threshold (0.45)

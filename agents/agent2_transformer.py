@@ -1,6 +1,7 @@
 """
 Agent 2 - Transformer Vulnerability Detector (CodeBERT)
-Wraps the fine-tuned model in models/agent2_transformer/.
+Wraps the fine-tuned model in models/agent2_transformer/. Missing files are
+downloaded automatically from Hugging Face on first use.
 
 Usage (run from the project root):
     from agents.agent2_transformer import predict_vuln
@@ -10,17 +11,47 @@ Usage (run from the project root):
     python agents/agent2_transformer.py --file path/to/source.py
 
 The model is loaded lazily on the first call and cached. Inference runs on GPU
-when available, otherwise on CPU. Requires: torch, transformers.
+when available, otherwise on CPU. Requires: torch, transformers,
+huggingface_hub (the latter only for the automatic download).
 """
 import argparse
 import json
 from pathlib import Path
 
-ARTIFACT = Path("models/agent2_transformer")
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_ARTIFACT = ROOT / "models" / "agent2_transformer"
+ARTIFACT = DEFAULT_ARTIFACT
+
+HF_REPO_ID = "MhamedRayan/devsecops-transformer"
+HF_FILES = ("config.json", "model.safetensors", "tokenizer.json",
+            "tokenizer_config.json", "meta.json")
 
 # Loaded bundles are cached per artifact path, so tests can point ARTIFACT at a
 # different directory without touching the real model.
 _cache = {}
+
+
+def _ensure_artifact():
+    """Make sure the artifact directory exists, downloading files if needed.
+
+    Uses huggingface_hub so the ~500 MB weights are fetched only when the local
+    copy is missing or incomplete; HF's own cache avoids redundant downloads.
+    Custom ARTIFACT paths (used by tests) are never downloaded into.
+    """
+    if ARTIFACT.resolve() != DEFAULT_ARTIFACT.resolve():
+        return ARTIFACT
+
+    try:
+        from huggingface_hub import hf_hub_download
+    except ImportError as exc:
+        raise RuntimeError(
+            "Model files are missing and huggingface_hub is not installed; "
+            "run: pip install -r requirements.txt") from exc
+
+    for name in HF_FILES:
+        hf_hub_download(repo_id=HF_REPO_ID, filename=name,
+                        local_dir=str(ARTIFACT))
+    return ARTIFACT
 
 
 def _error(reason):
@@ -29,10 +60,12 @@ def _error(reason):
 
 
 def _load():
-    """Load the tokenizer, model and metadata once per artifact directory."""
+    """Download (if needed) and load the tokenizer, model and metadata once."""
     key = str(ARTIFACT.resolve())
     if key in _cache:
         return _cache[key]
+
+    _ensure_artifact()
 
     # Imported lazily so the module still imports (and fails safe) when the
     # optional heavy dependencies are missing.

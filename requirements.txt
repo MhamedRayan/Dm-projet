@@ -8,3 +8,4 @@ scipy==1.16.3
 #   pip install torch==2.15.0 --index-url https://download.pytorch.org/whl/cpu
 torch==2.15.0
 transformers==5.23.0
+huggingface_hub>=0.25.0
