@@ -1,0 +1,46 @@
+  test-00000-of-00002.parquet: downloading (0.0/94.1 MB) ...
+    21 MB
+    42 MB
+    63 MB
+    84 MB
+  test-00000-of-00002.parquet: done
+  test-00001-of-00002.parquet: downloading (0.0/76.8 MB) ...
+    21 MB
+    42 MB
+    63 MB
+  test-00001-of-00002.parquet: done
+DiverseVul test rows: 330492 | vulnerable: 5.73%
+Evaluating on 5000 unique functions | vulnerable: 50.00%
+
+
+=== DiverseVul external (zero-shot) ===
+
+--- Threshold: default 0.5 ---
+              precision    recall  f1-score   support
+
+           0      0.769     0.028     0.054      2500
+           1      0.505     0.992     0.669      2500
+
+    accuracy                          0.510      5000
+   macro avg      0.637     0.510     0.362      5000
+weighted avg      0.637     0.510     0.362      5000
+
+Confusion matrix:
+ [[  70 2430]
+ [  21 2479]]
+
+--- Threshold: chosen 0.216 ---
+              precision    recall  f1-score   support
+
+           0      0.760     0.008     0.015      2500
+           1      0.501     0.998     0.667      2500
+
+    accuracy                          0.503      5000
+   macro avg      0.631     0.503     0.341      5000
+weighted avg      0.631     0.503     0.341      5000
+
+Confusion matrix:
+ [[  19 2481]
+ [   6 2494]]
+
+ROC-AUC: 0.549 | PR-AUC: 0.528

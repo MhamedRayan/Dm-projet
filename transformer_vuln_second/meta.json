@@ -1,0 +1,19 @@
+{
+  "base_model": "microsoft/codebert-base",
+  "max_len": 384,
+  "labels": [
+    "safe",
+    "vulnerable"
+  ],
+  "test_metrics": {
+    "test_loss": 1.2266641855239868,
+    "test_accuracy": 0.6592240117130308,
+    "test_precision": 0.7061068702290076,
+    "test_recall": 0.44223107569721115,
+    "test_f1": 0.5438510534051936,
+    "test_runtime": 38.1717,
+    "test_samples_per_second": 71.571,
+    "test_steps_per_second": 1.126
+  },
+  "threshold": 0.5099999999999998
+}
