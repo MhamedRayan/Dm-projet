@@ -1,0 +1,29 @@
+{
+  "policy": "consensus_fail_safe",
+  "features": [
+    "a1_high_risk",
+    "a2_vulnerable",
+    "a1_risk_ratio",
+    "a2_risk_ratio"
+  ],
+  "classes": [
+    "FAIL",
+    "PASS",
+    "REVIEW"
+  ],
+  "max_depth": 3,
+  "seed": 42,
+  "grid": {
+    "ratio_min": 0.0,
+    "ratio_max": 2.0,
+    "ratios": 45,
+    "rows": 8100
+  },
+  "policy_agreement": 1.0,
+  "train_accuracy": 1.0,
+  "source_thresholds": {
+    "agent1": 0.3182926377275692,
+    "agent2": 0.5099999999999998
+  },
+  "note": "Synthetic policy grid; the tree encodes the consensus policy, not ground-truth verdicts."
+}

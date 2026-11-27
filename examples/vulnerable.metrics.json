@@ -1,0 +1,23 @@
+{
+  "loc": 200,
+  "vg": 25,
+  "evg": 5,
+  "ivg": 8,
+  "n": 600,
+  "v": 2500.0,
+  "l": 30,
+  "d": 5,
+  "i": 10,
+  "e": 80000.0,
+  "b": 3,
+  "t": 20,
+  "locode": 150,
+  "locomment": 20,
+  "loccodeandcomment": 0,
+  "loblank": 30,
+  "uniq_op": 25,
+  "uniq_opnd": 30,
+  "total_op": 300,
+  "total_opnd": 120,
+  "branchcount": 50
+}

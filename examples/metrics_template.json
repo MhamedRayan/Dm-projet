@@ -1,0 +1,23 @@
+{
+  "loc": 0,
+  "vg": 0,
+  "evg": 0,
+  "ivg": 0,
+  "n": 0,
+  "v": 0.0,
+  "l": 0,
+  "d": 0,
+  "i": 0,
+  "e": 0.0,
+  "b": 0,
+  "t": 0,
+  "locode": 0,
+  "locomment": 0,
+  "loccodeandcomment": 0,
+  "loblank": 0,
+  "uniq_op": 0,
+  "uniq_opnd": 0,
+  "total_op": 0,
+  "total_opnd": 0,
+  "branchcount": 0
+}

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>DevSecOps Auditor</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" />
+          <path d="M9.5 12l1.8 1.8 3.4-3.6" />
+        </svg>
+      </div>
+      <div>
+        <h1>DevSecOps Auditor</h1>
+        <p>Metrics + transformer + gatekeeper</p>
+      </div>
+    </div>
+    <div class="badge-local"><span class="dot"></span> Runs locally</div>
+  </header>
+
+  <main class="layout">
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Source code</h2>
+          <p class="sub">Paste code or upload a file. Nothing is executed.</p>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Code input mode">
+          <button class="tab is-active" data-code-mode="paste" role="tab" aria-selected="true">Paste</button>
+          <button class="tab" data-code-mode="upload" role="tab" aria-selected="false">Upload</button>
+        </div>
+      </div>
+
+      <div class="pane is-active" data-code-pane="paste">
+        <textarea id="codeInput" spellcheck="false"
+                  placeholder="// Paste C/C++ or Python code here..."></textarea>
+      </div>
+
+      <div class="pane" data-code-pane="upload">
+        <label class="dropzone" id="codeDropzone">
+          <input type="file" id="codeFile" hidden />
+          <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 16V4" />
+            <path d="M7 9l5-5 5 5" />
+            <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
+          </svg>
+          <strong>Drop a source file</strong>
+          <span>or click to browse · max 2 MB</span>
+          <span class="file-chip" id="codeFileChip" hidden></span>
+        </label>
+      </div>
+
+      <div class="input-meta">
+        <span id="codeCount">0 characters</span>
+        <button type="button" class="link" id="clearCode">Clear</button>
+      </div>
+
+      <details class="metrics" id="metricsDetails">
+        <summary>
+          <span class="summary-left">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 19V5" />
+              <path d="M4 19h16" />
+              <path d="M8 15l3-4 3 2 4-6" />
+            </svg>
+            Structural metrics
+            <span class="pill">optional</span>
+          </span>
+          <span class="chevron" aria-hidden="true">⌄</span>
+        </summary>
+
+        <p class="hint">
+          Agent 1 needs 21 NASA/PROMISE metrics. Without them, the gatekeeper
+          returns <strong>REVIEW</strong>.
+        </p>
+
+        <div class="tabs tabs-small" role="tablist" aria-label="Metrics input mode">
+          <button class="tab is-active" data-metrics-mode="paste" role="tab" aria-selected="true">Paste JSON</button>
+          <button class="tab" data-metrics-mode="upload" role="tab" aria-selected="false">Upload JSON</button>
+        </div>
+
+        <div class="pane is-active" data-metrics-pane="paste">
+          <textarea id="metricsInput" class="metrics-input" spellcheck="false"
+                    placeholder='{ "loc": 200, "vg": 25, ... }'></textarea>
+        </div>
+
+        <div class="pane" data-metrics-pane="upload">
+          <label class="dropzone dropzone-small" id="metricsDropzone">
+            <input type="file" id="metricsFile" accept=".json,application/json" hidden />
+            <strong>Drop a metrics JSON</strong>
+            <span>or click to browse</span>
+            <span class="file-chip" id="metricsFileChip" hidden></span>
+          </label>
+        </div>
+
+        <div class="example-row">
+          <button type="button" class="link" id="loadFailExample">Load failing example</button>
+          <button type="button" class="link" id="loadPassExample">Load passing example</button>
+        </div>
+      </details>
+
+      <button type="button" class="analyze" id="analyzeBtn">
+        <span class="spinner" id="spinner" hidden aria-hidden="true"></span>
+        <span id="analyzeLabel">Analyze code</span>
+      </button>
+      <p class="form-error" id="formError" role="alert" hidden></p>
+    </section>
+
+    <section class="panel results-panel">
+      <div class="panel-head">
+        <div>
+          <h2>Result</h2>
+          <p class="sub" id="resultSub">Waiting for input</p>
+        </div>
+        <span class="elapsed" id="elapsed" hidden></span>
+      </div>
+
+      <div class="empty" id="emptyState">
+        <div class="empty-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" />
+            <path d="M9.5 12l1.8 1.8 3.4-3.6" />
+          </svg>
+        </div>
+        <p>Run an analysis to see the structural score, transformer score, and final verdict.</p>
+      </div>
+
+      <div id="results" hidden>
+        <div class="verdict" id="verdictCard">
+          <div class="verdict-badge" id="verdictBadge">—</div>
+          <div class="verdict-copy">
+            <h3 id="verdictTitle">—</h3>
+            <p id="verdictReason"></p>
+          </div>
+          <div class="confidence">
+            <span id="confidenceValue">—</span>
+            <small>tree confidence</small>
+          </div>
+        </div>
+
+        <div class="agents">
+          <article class="agent" id="agent1Card">
+            <div class="agent-head">
+              <span class="agent-num">1</span>
+              <div>
+                <h3>Structural risk</h3>
+                <p>Random Forest · metrics</p>
+              </div>
+              <span class="agent-state" id="agent1State">—</span>
+            </div>
+            <div class="score-line">
+              <span class="score" id="agent1Score">—</span>
+              <span class="threshold" id="agent1Threshold">—</span>
+            </div>
+            <div class="bar"><span id="agent1Bar"></span></div>
+            <p class="agent-note" id="agent1Note" hidden></p>
+          </article>
+
+          <article class="agent" id="agent2Card">
+            <div class="agent-head">
+              <span class="agent-num">2</span>
+              <div>
+                <h3>Semantic risk</h3>
+                <p>CodeBERT · source code</p>
+              </div>
+              <span class="agent-state" id="agent2State">—</span>
+            </div>
+            <div class="score-line">
+              <span class="score" id="agent2Score">—</span>
+              <span class="threshold" id="agent2Threshold">—</span>
+            </div>
+            <div class="bar"><span id="agent2Bar"></span></div>
+            <p class="agent-note" id="agent2Note" hidden></p>
+          </article>
+        </div>
+
+        <details class="raw">
+          <summary>Raw response</summary>
+          <pre id="rawJson"></pre>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>Local-only · code is analyzed, never executed</footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
